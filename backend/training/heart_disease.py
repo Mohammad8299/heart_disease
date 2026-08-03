@@ -3,8 +3,15 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
+from pathlib import Path
+import joblib
+import os
 
-data_frame = pd.read_excel(r'E:\ML\projects\heart_disease\backend\data_set\heart_disease_dataset.xlsx')
+current_file_path = Path(__file__).resolve()
+project_root = current_file_path.parent.parent
+
+dataset_path = project_root / 'dataset' / 'heart_disease_dataset.xlsx'
+data_frame = pd.read_excel(str(dataset_path))
 
 data_frame['BloodPressure'] = data_frame['BloodPressure'].fillna(data_frame['BloodPressure'].mean())
 data_frame['Cholesterol'] = data_frame['Cholesterol'].fillna(data_frame['Cholesterol'].mean())
@@ -29,3 +36,11 @@ X_test_scaled = scaler.transform(X_test)
 
 model = LogisticRegression(max_iter=1000, random_state=42)
 model.fit(X_train_scaled, y_train.values.ravel())
+
+model_dir_heart = project_root / "model"
+model_dir_heart.mkdir(parents=True, exist_ok=True)
+
+model_path_heart = model_dir_heart / "model.pkl"
+joblib.dump(model, str(model_path_heart))
+
+
