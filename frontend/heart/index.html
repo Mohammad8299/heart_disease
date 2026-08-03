@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>فرم تشخیص سلامت</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="progress-container">
+        <div class="progress-bar-bg"><div id="progressBar" class="progress-bar-fill"></div></div>
+        <div class="steps-labels">
+            <span id="label1" class="active">فردی</span>
+            <span id="label2">جسمی</span>
+            <span id="label3">پزشکی</span>
+        </div>
+    </div>
+
+    <div id="formCard" class="card">
+        <form id="healthForm">
+            <div id="step1" class="step">
+                <h3>اطلاعات فردی</h3>
+                <input type="number" id="Age" placeholder="سن" required>
+                <select id="Gender"><option value="Male">مرد</option><option value="Female">زن</option></select>
+                <button type="button" onclick="nextStep(2)">بعدی</button>
+            </div>
+
+            <div id="step2" class="step" style="display:none;">
+                <h3>اطلاعات جسمی</h3>
+                <input type="number" id="Height" placeholder="قد (سانتی‌متر)" oninput="calcBMI()" required>
+                <input type="number" id="Weight" placeholder="وزن (کیلوگرم)" oninput="calcBMI()" required>
+                <p>BMI: <span id="bmiDisplay">0</span></p>
+                <button type="button" onclick="nextStep(1)">قبلی</button>
+                <button type="button" onclick="nextStep(3)">بعدی</button>
+            </div>
+
+            <div id="step3" class="step" style="display:none;">
+                <h3>اطلاعات پزشکی</h3>
+                <input type="text" id="BloodPressure" placeholder="فشار خون" required>
+                <input type="text" id="Cholesterol" placeholder="کلسترول" required>
+                <input type="text" id="HeartRate" placeholder="ضربان قلب" required>
+                <select id="smoking"><option value="0">غیرسیگاری</option><option value="1">سیگاری</option></select>
+                <input type="text" id="ExerciseHours" placeholder="ساعت ورزش در هفته" required>
+                <select id="familyHistory"><option value="0">سابقه خانوادگی ندارد</option><option value="1">دارد</option></select>
+                <button type="button" onclick="nextStep(2)">قبلی</button>
+                <button type="submit">ارسال نهایی</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="resultCard" class="card" style="display:none;">
+        <h3>خلاصه مشخصات</h3>
+        <div id="summaryContent"></div>
+        <hr>
+        <div id="apiResult" class="result-box"></div>
+        <button onclick="resetForm()">شروع مجدد</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

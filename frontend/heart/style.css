@@ -1,0 +1,81 @@
+body { 
+    font-family: Tahoma, sans-serif; 
+    background-color: #f0f7ff; 
+    padding: 20px; 
+    background-image: url('Heart-scaled.svg');
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-position: bottom;
+    background-attachment: fixed;
+    margin-top: 50px;
+}
+.container { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+}
+.card { 
+    background: white; 
+    padding: 30px; 
+    border-radius: 20px; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+    width: 100%; 
+    max-width: 400px; 
+    opacity: 100%;
+}
+
+.progress-container { 
+    width: 100%; 
+    max-width: 400px; 
+    margin-bottom: 20px; 
+}
+.progress-bar-bg { 
+    height: 10px; 
+    background-color: #d1e9ff; 
+    border-radius: 5px; 
+}
+.progress-bar-fill { 
+    height: 100%; 
+    background-color: #0082a6; 
+    width: 33%; 
+    transition: 0.3s; 
+}
+.steps-labels { 
+    display: flex; 
+    justify-content: space-between; 
+    margin-top: 10px; 
+    font-size: 15px; 
+    color: #89c4f4; 
+}
+.steps-labels .active { 
+    color: #3498db; 
+    font-weight: bold; 
+}
+
+
+input, select { 
+    width: 100%; 
+    padding: 12px; 
+    margin: 10px 0; 
+    border: 2px solid #e1f0ff; 
+    border-radius: 10px; 
+    box-sizing: border-box; 
+}
+button { 
+    width: 100%; 
+    padding: 12px; 
+    background-color: #0082a6; 
+    border: none; 
+    color: white; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    margin-top: 10px; 
+}
+.result-box { 
+    background: #e8f4fd; 
+    padding: 15px; 
+    border-radius: 10px; 
+    text-align: center; 
+    color: #e74c3c; 
+    font-weight: bold; 
+}
