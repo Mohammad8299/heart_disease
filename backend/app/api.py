@@ -35,4 +35,4 @@ def make_prediction(data: PredictionRequest):
             family_history=data.family_history,
         )
     )
-    return result
+    return {"result": result}
