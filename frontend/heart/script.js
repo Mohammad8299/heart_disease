@@ -78,16 +78,9 @@ document.getElementById('healthForm').onsubmit = function(e) {
     };
 
     const displayLabels = {
-        "Age": "سن",
-        "Gender": "جنسیت",
-        "Height": "قد (سانتی‌متر)",
-        "Weight": "وزن (کیلوگرم)",
-        "BMI": "شاخص توده بدنی (BMI)",
-        "BloodPressure": "فشار خون",
-        "Cholesterol": "کلسترول",
-        "HeartRate": "ضربان قلب",
-        "Smoking": "وضعیت مصرف سیگار",
-        "ExerciseHours": "ساعت ورزش در هفته",
+        "Age": "سن", "Gender": "جنسیت", "Height": "قد (سانتی‌متر)", "Weight": "وزن (کیلوگرم)",
+        "BMI": "شاخص توده بدنی (BMI)", "BloodPressure": "فشار خون", "Cholesterol": "کلسترول",
+        "HeartRate": "ضربان قلب", "Smoking": "وضعیت مصرف سیگار", "ExerciseHours": "ساعت ورزش در هفته",
         "FamilyHistory": "سابقه خانوادگی"
     };
 
@@ -98,28 +91,22 @@ document.getElementById('healthForm').onsubmit = function(e) {
     for(let key in rawData) {
         let value = rawData[key];
         let label = displayLabels[key];
-
-        if (key === "Gender") {
-            value = (value === "Male") ? "مرد" : "زن";
-        }
- 
-        else if (key === "Smoking") {
-            value = (value === "1") ? "سیگاری" : "غیر سیگاری";
-        }
-
-        else if (key === "FamilyHistory") {
-            value = (value === "1") ? "دارد" : "ندارد";
-        }
-
+        if (key === "Gender") value = (value === "Male") ? "مرد" : "زن";
+        else if (key === "Smoking") value = (value === "1") ? "سیگاری" : "غیر سیگاری";
+        else if (key === "FamilyHistory") value = (value === "1") ? "دارد" : "ندارد";
         html += `<p><strong style="color: #333;">${label}:</strong> ${value}</p>`;
     }
     
     document.getElementById('summaryContent').innerHTML = html;
-    document.getElementById('apiResult').innerText = "در حال بررسی";
+    const apiResultElement = document.getElementById('apiResult');
+    const resultCardElement = document.getElementById('resultCard');
+    
+    apiResultElement.innerText = "در حال تحلیل...";
+
     fetch("http://127.0.0.1:8000/predict",{
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:JSON.stringify({
+        body: JSON.stringify({
             "age": rawData.Age,
             "gender": rawData.Gender,
             "blood_pressure": rawData.BloodPressure,
@@ -129,19 +116,27 @@ document.getElementById('healthForm').onsubmit = function(e) {
             "exercise_hours": rawData.ExerciseHours,
             "bmi": rawData.BMI,
             "family_history": rawData.FamilyHistory
-          }
-          
-          )
+        })
     })
-        .then((response) => response.json())
-        .then(({ data }) => {
-        // فرض می‌کنیم سرور پاسخی مثل { "result": "احتمال خطر بالا" } برمی‌گرداند
-        // بسته به خروجی دوستتان، کلمه 'result' را تغییر دهید
-            document.getElementById('apiResult').innerText = 'نتیجه مدل: ' + data.probability + '%'
+    .then((response) => response.json())
+    .then(({ data }) => {
+        let prob = parseFloat(data.probability);
+        apiResultElement.innerText = 'نتیجه مدل: ' + prob + '%';
+
+        let color = "";
+        if (prob >= 0 && prob < 25) color = "green";
+        else if (prob >= 25 && prob < 50) color = "gold";
+        else if (prob >= 50 && prob < 75) color = "orange";
+        else if (prob >= 75 && prob <= 100) color = "red";
+
+        apiResultElement.style.color = color;
+        resultCardElement.style.borderColor = color;
+        resultCardElement.style.borderWidth = "3px"; 
+        resultCardElement.style.borderStyle = "solid";
     })
     .catch(error => {
         console.error("خطا:", error);
-        document.getElementById('apiResult').innerText = "خطا در برقراری ارتباط با سرور.";
+        apiResultElement.innerText = "خطا در برقراری ارتباط با سرور.";
+        apiResultElement.style.color = "red";
     });
-    document.getElementById('apiResult').innerText = "نتیجه مدل: احتمال خطر پایین (نرمال)";
 };
