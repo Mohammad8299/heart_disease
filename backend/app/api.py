@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
-from pathlib import Path
 from .types.Gender import Gender
 from .ml import *
 
@@ -35,4 +34,4 @@ def make_prediction(data: PredictionRequest):
             family_history=data.family_history,
         )
     )
-    return {"result": result}
+    return {"data": {"probability": round(result, 2) * 100}}

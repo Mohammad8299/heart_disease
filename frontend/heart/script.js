@@ -133,11 +133,11 @@ document.getElementById('healthForm').onsubmit = function(e) {
           
           )
     })
-    .then(response => response.json())
-    .then(data => {
+        .then((response) => response.json())
+        .then(({ data }) => {
         // فرض می‌کنیم سرور پاسخی مثل { "result": "احتمال خطر بالا" } برمی‌گرداند
         // بسته به خروجی دوستتان، کلمه 'result' را تغییر دهید
-        document.getElementById('apiResult').innerText = "نتیجه مدل: " + data.result;
+            document.getElementById('apiResult').innerText = 'نتیجه مدل: ' + data.probability + '%'
     })
     .catch(error => {
         console.error("خطا:", error);
