@@ -41,6 +41,8 @@ model_dir_heart = project_root / "model"
 model_dir_heart.mkdir(parents=True, exist_ok=True)
 
 model_path_heart = model_dir_heart / "model.pkl"
+scaler_path = model_dir_heart / "scaler.pkl"
 joblib.dump(model, str(model_path_heart))
+joblib.dump(scaler, str(scaler_path))
 
 

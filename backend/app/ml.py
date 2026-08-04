@@ -4,7 +4,7 @@ from typing import cast
 from sklearn.linear_model import LogisticRegression
 from .types.Gender import Gender
 from dataclasses import dataclass
-
+from sklearn.preprocessing import StandardScaler
 
 @dataclass
 class PredictParams:
@@ -35,5 +35,11 @@ class PredictParams:
 def predict(params: PredictParams):
     model_path = Path(__file__).parent.parent / "model" / "model.pkl"
     model = cast(LogisticRegression, joblib.load(str(model_path)))
+    scaler_path = Path(__file__).parent.parent / "model" / "scaler.pkl"
+    scaler = cast(StandardScaler, joblib.load(str(scaler_path)))
+    input = scaler.transform([params.get_array()])
+    return float(model.predict_proba(input)[0,1])
 
-    return int(model.predict([params.get_array()])[0])
+
+    
+
