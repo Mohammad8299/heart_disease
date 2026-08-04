@@ -115,7 +115,33 @@ document.getElementById('healthForm').onsubmit = function(e) {
     }
     
     document.getElementById('summaryContent').innerHTML = html;
-    
-
+    document.getElementById('apiResult').innerText = "در حال بررسی";
+    fetch("http://127.0.0.1:8000/predict",{
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body:JSON.stringify({
+            "age": rawData.Age,
+            "gender": rawData.Gender,
+            "blood_pressure": rawData.BloodPressure,
+            "cholesterol": rawData.Cholesterol,
+            "heart_rate": rawData.HeartRate,
+            "smoking": rawData.Smoking,
+            "exercise_hours": rawData.ExerciseHours,
+            "bmi": rawData.BMI,
+            "family_history": rawData.FamilyHistory
+          }
+          
+          )
+    })
+    .then(response => response.json())
+    .then(data => {
+        // فرض می‌کنیم سرور پاسخی مثل { "result": "احتمال خطر بالا" } برمی‌گرداند
+        // بسته به خروجی دوستتان، کلمه 'result' را تغییر دهید
+        document.getElementById('apiResult').innerText = "نتیجه مدل: " + data.result;
+    })
+    .catch(error => {
+        console.error("خطا:", error);
+        document.getElementById('apiResult').innerText = "خطا در برقراری ارتباط با سرور.";
+    });
     document.getElementById('apiResult').innerText = "نتیجه مدل: احتمال خطر پایین (نرمال)";
 };
